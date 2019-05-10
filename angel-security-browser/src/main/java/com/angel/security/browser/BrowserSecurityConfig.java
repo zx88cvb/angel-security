@@ -3,6 +3,7 @@ package com.angel.security.browser;
 import com.angel.security.browser.authentication.AngelAuthenctiationFailureHandler;
 import com.angel.security.browser.authentication.AngelAuthenticationSuccessHandler;
 import com.angel.security.core.properties.SecurityProperties;
+import com.angel.security.core.validate.ValidateCodeFilter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -12,6 +13,7 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
+import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import javax.annotation.Resource;
 
@@ -35,9 +37,13 @@ public class BrowserSecurityConfig extends WebSecurityConfigurerAdapter {
     @Autowired
     private AngelAuthenctiationFailureHandler angelAuthenctiationFailureHandler;
 
+    @Autowired
+    private ValidateCodeFilter validateCodeFilter;
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
-        http.formLogin()
+        http.addFilterBefore(validateCodeFilter, UsernamePasswordAuthenticationFilter.class)
+                .formLogin()
                 .loginPage("/authentication/require")
                 // 登录接口url
                 .loginProcessingUrl("/authentication/form")
@@ -47,7 +53,8 @@ public class BrowserSecurityConfig extends WebSecurityConfigurerAdapter {
                 .authorizeRequests()
                 // 匹配到 不进行身份认证
                 .antMatchers("/authentication/require",
-                        securityProperties.getBrowser().getLoginPage()).permitAll()
+                        securityProperties.getBrowser().getLoginPage(),
+                        "/code/image").permitAll()
                 .anyRequest()
                 .authenticated()
                 .and()

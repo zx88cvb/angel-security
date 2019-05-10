@@ -1,4 +1,4 @@
-package com.angel.security.core.validate;
+package com.angel.security.core.validate.image;
 
 import lombok.Data;
 

@@ -13,5 +13,10 @@ import org.springframework.boot.context.properties.ConfigurationProperties;
 public class SecurityProperties {
 
     // 跳转页面browser属性
-    BrowserProperties browser = new BrowserProperties();
+    private BrowserProperties browser = new BrowserProperties();
+
+    /**
+     * 验证
+     */
+    private ValidateCodeProperties code = new ValidateCodeProperties();
 }
