@@ -1,7 +1,9 @@
-package com.angel.security.core.validate.image;
+package com.angel.security.code;
 
 import com.angel.security.core.properties.SecurityProperties;
 import com.angel.security.core.validate.ValidateCodeGenerator;
+import com.angel.security.core.validate.image.ImageCode;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.bind.ServletRequestUtils;
@@ -12,17 +14,18 @@ import java.awt.image.BufferedImage;
 import java.util.Random;
 
 /**
- * 验证码生成实现
  * @author JingXiang Bi
- * @date 2019/5/10
+ * @date 2019/5/13
  */
-public class ImageCodeGenerator implements ValidateCodeGenerator {
-
+@Component("imageCodeGenerator")
+@Slf4j
+public class DemoImageCodeGenerator implements ValidateCodeGenerator {
     @Autowired
     private SecurityProperties securityProperties;
 
     @Override
     public ImageCode createImageCode(HttpServletRequest request) {
+        log.info("更高级的图形验证码");
         int width = ServletRequestUtils.getIntParameter(request, "width",
                 securityProperties.getCode().getImage().getWidth());
         int height = ServletRequestUtils.getIntParameter(request, "height",
@@ -77,13 +80,5 @@ public class ImageCodeGenerator implements ValidateCodeGenerator {
         int g = fc + random.nextInt(bc - fc);
         int b = fc + random.nextInt(bc - fc);
         return new Color(r, g, b);
-    }
-
-    public SecurityProperties getSecurityProperties() {
-        return securityProperties;
-    }
-
-    public void setSecurityProperties(SecurityProperties securityProperties) {
-        this.securityProperties = securityProperties;
     }
 }

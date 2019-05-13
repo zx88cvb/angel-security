@@ -18,4 +18,9 @@ public class BrowserProperties {
      * 登录类型
      */
     private LoginType loginType = LoginType.JSON;
+
+    /**
+     * 记住我秒数时长
+     */
+    private int rememberMeSeconds = 3600;
 }
