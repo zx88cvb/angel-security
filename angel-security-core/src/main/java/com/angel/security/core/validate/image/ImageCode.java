@@ -1,5 +1,6 @@
 package com.angel.security.core.validate.image;
 
+import com.angel.security.core.validate.ValidateCode;
 import lombok.Data;
 
 import java.awt.image.BufferedImage;
@@ -11,32 +12,20 @@ import java.time.LocalDateTime;
  * @date 2019/5/9
  */
 @Data
-public class ImageCode {
+public class ImageCode extends ValidateCode {
 
     /**
      * 图片
      */
     private BufferedImage image;
 
-    /**
-     * 验证码
-     */
-    private String code;
-
-    /**
-     * 过期时间
-     */
-    private LocalDateTime expireTime;
-
     public ImageCode(BufferedImage image, String code, LocalDateTime expireTime) {
+        super(code, expireTime);
         this.image = image;
-        this.code = code;
-        this.expireTime = expireTime;
     }
 
     public ImageCode(BufferedImage image, String code, int expireIn) {
+        super(code, expireIn);
         this.image = image;
-        this.code = code;
-        this.expireTime = LocalDateTime.now().plusSeconds(expireIn);
     }
 }
